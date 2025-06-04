@@ -2,15 +2,13 @@ package com.example.reminderapp.data.Repository
 
 import android.content.res.Resources
 import com.example.reminderapp.data.Dao.ReminderDao
-import com.example.reminderapp.data.Dao.UserDao
 import com.example.reminderapp.data.model.Reminder
 import kotlinx.coroutines.flow.Flow
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 
-class ReminderRepository(private val reminderDao: ReminderDao,
-    private val userDao: UserDao) {
+class ReminderRepository(private val reminderDao: ReminderDao) {
  suspend fun getUpcomingReminders(userId: String,):Flow<List<Reminder>> {
         val currentTime = LocalDateTime.now().toString()
         return reminderDao.getUpcomingReminders(userid = 0)

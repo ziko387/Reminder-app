@@ -1,7 +1,6 @@
 package com.example.reminderapp.presentation
 
 import com.example.reminderapp.data.Repository.ReminderRepository
-import com.example.reminderapp.data.Repository.UserRepository
 import com.example.reminderapp.data.model.Reminder
 import androidx.lifecycle.ViewModel
 import com.example.reminderapp.data.model.User
