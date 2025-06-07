@@ -14,8 +14,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.material.Text
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.res.painterResource
 import com.example.reminderapp.R
@@ -24,20 +24,21 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.material.OutlinedTextField
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.material.Button
-import androidx.compose.material.TextButton
+import androidx.compose.material3.Button
+import androidx.compose.material3.TextButton
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
-import androidx.compose.material.IconButton
-import androidx.compose.material.TextFieldColors
+import androidx.compose.material3.IconButton
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
+
+
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.ui.text.input.VisualTransformation
 
 
@@ -58,7 +59,7 @@ fun LoginScreen() {
             text = "Login ",
             color = Color.White,
             fontWeight = FontWeight.Bold,
-            style = MaterialTheme.typography.h4,
+            style = MaterialTheme.typography.headlineMedium,
             fontSize = 30.sp
         )
         Image(
@@ -72,16 +73,42 @@ fun LoginScreen() {
         OutlinedTextField(
             value = username,
             onValueChange = { username = it },
+            modifier = Modifier.fillMaxWidth(),
             label = { Text("Username") },
-            colors = TextFieldDefaults.outlinedTextFieldColors(
+            colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Color.White,
                 unfocusedBorderColor = Color.White,
-                textColor = Color.White,
                 focusedLabelColor = Color.White,
-                unfocusedLabelColor = Color.White
+               unfocusedLabelColor = Color.White
+
             ),
+
+//            colors = TextFieldDefaults.outlinedTextFieldColors(
+//                focusedBorderColor = Color.White,
+//                unfocusedBorderColor = Color.White,
+//                textColor = Color.White,
+//                focusedLabelColor = Color.White,
+//                unfocusedLabelColor = Color.White
+
+//            ),
             singleLine = true,
-            modifier = Modifier.fillMaxWidth(),
+            visualTransformation =if(passwordVisible)
+                VisualTransformation.None else PasswordVisualTransformation(),
+            trailingIcon = {
+                val image = if (passwordVisible)
+                    Icons.Default.Lock
+
+                else Icons.Default.Lock
+
+
+                IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                    Icon(imageVector = image, contentDescription = if(passwordVisible)
+                        "Hide Password" else "Show Password",
+                        tint = Color.White)
+
+                }
+            }
+
         )
         Spacer(Modifier.height(25.dp))
 
@@ -90,19 +117,22 @@ fun LoginScreen() {
             onValueChange = { password = it },
             label = { Text("Password") },
             modifier = Modifier.fillMaxWidth(),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
+            colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Color.White,
                 unfocusedBorderColor = Color.White,
-                textColor = Color.White,
                 focusedLabelColor = Color.White,
-                unfocusedLabelColor = Color.White),
+                unfocusedLabelColor = Color.White
+            ),
+
             singleLine = true,
             visualTransformation =if(passwordVisible)
                 VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
                 val image = if (passwordVisible)
                     Icons.Default.Lock
+
                 else Icons.Default.Lock
+
 
                 IconButton(onClick = { passwordVisible = !passwordVisible }) {
                     Icon(imageVector = image, contentDescription = if(passwordVisible)
@@ -118,7 +148,7 @@ fun LoginScreen() {
         Button(onClick = {}, modifier = Modifier.fillMaxWidth()) {
            Text(
                text = "Login",
-               style = MaterialTheme.typography.button,
+               style = MaterialTheme.typography.bodyMedium,
                fontSize = 20.sp
            )
 
@@ -127,12 +157,14 @@ fun LoginScreen() {
         TextButton(onClick = {  }) {
             Text(
                 text = "new member?, register",
-                style = MaterialTheme.typography.body1)
+                style = MaterialTheme.typography.bodyMedium)
 
         }
 
     }
 }
+
+
 
 @Preview(showBackground = true)
 @Composable

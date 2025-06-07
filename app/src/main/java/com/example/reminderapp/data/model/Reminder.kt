@@ -7,8 +7,8 @@ import java.time.LocalDateTime
 
 @Entity(tableName = "reminder")
 data class Reminder(
-    @PrimaryKey(autoGenerate = true) val reminderid: Int,
-    val userid: Int,
+    @PrimaryKey(autoGenerate = true) val reminderId: Int,
+    val userId: Int,
     val name: String,
     val description: String,
     val datetime: LocalDateTime,
