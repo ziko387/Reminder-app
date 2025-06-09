@@ -34,11 +34,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 
 
 @Composable
 fun RegisterUser(
-
+navController: NavController
 ){
     var email by remember{ mutableStateOf("") }
     var username by remember{ mutableStateOf("") }
@@ -162,16 +164,26 @@ fun RegisterUser(
             )
 
         }
-        TextButton(onClick ={} ) {
+        TextButton(onClick = {
+            navController.navigate("Login"){
+                popUpTo("Register"){
+                    inclusive = true
+                    saveState = true
+                }
+                launchSingleTop = true
+            }
+        })
+        {
             Text(
                 text = "Already have an account? Login",
-                style = MaterialTheme.typography.body1)
-        }
+                style = MaterialTheme.typography.body1
+            )
+            }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun RegisterUserPreview(){
-    RegisterUser()
+    RegisterUser(rememberNavController())
 }

@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+ <style name="Theme.ReminderApp.Splash" parent="Theme.SplashScreen">
+     <item name="windowSplashScreenBackground">@color/black</item>
+     <item name="windowSplashScreenAnimatedIcon">@drawable/calender</item>
+     <item name="postSplashScreenTheme">@style/Theme.ReminderApp</item>
 
+ </style>
     <style name="Theme.ReminderApp" parent="android:Theme.Material.Light.NoActionBar" />
 </resources>
