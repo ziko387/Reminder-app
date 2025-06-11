@@ -8,9 +8,10 @@ import com.example.reminderapp.presentation.components.Splash_Screen
 import com.example.reminderapp.presentation.screen.intro.Intro_Screen
 import com.example.reminderapp.presentation.screen.intro.Intro_Screen2
 import com.example.reminderapp.presentation.screen.intro.Intro_Screen3
-import com.example.reminderapp.presentation.navigation.Screen
 import com.example.reminderapp.presentation.components.LoginScreen
 import com.example.reminderapp.presentation.components.RegisterUser
+import com.example.reminderapp.presentation.screen.Dasboard.DashBoardScreen
+
 
 
 @Composable
@@ -32,10 +33,13 @@ fun ReminderNavGraph(navController: NavHostController){
             Intro_Screen3(navController)
         }
        composable("Register"){
-           RegisterUser(navController)
-       }
+           RegisterUser(navController, onSignupClick = { email, password ->}) }
+
        composable("Login"){
            LoginScreen(navController)
        }
+        composable ("Dashboard"){
+            DashBoardScreen(navController)
+        }
        }
     }

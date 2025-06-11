@@ -42,12 +42,15 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 
 @Composable
 fun LoginScreen(navController: NavController) {
+    var error by remember { mutableStateOf<String?>(null) }
     var passwordVisible by remember { mutableStateOf(false) }
-    var username by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
 
@@ -73,10 +76,10 @@ fun LoginScreen(navController: NavController) {
         Spacer(modifier = Modifier.height(25.dp))
 
         OutlinedTextField(
-            value = username,
-            onValueChange = { username = it },
+            value = email,
+            onValueChange = { email = it },
             modifier = Modifier.fillMaxWidth(),
-            label = { Text("Username") },
+            label = { Text("email") },
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Color.White,
                 unfocusedBorderColor = Color.White,
@@ -147,7 +150,22 @@ fun LoginScreen(navController: NavController) {
         )
         Spacer(Modifier.height(25.dp))
 
-        Button(onClick = {}, modifier = Modifier.fillMaxWidth()) {
+        Button(onClick = {
+            if (email.isBlank() || password.isBlank()) {
+                error = "Email and password cannot be empty"
+            } else {
+                Firebase.auth.signInWithEmailAndPassword(email,
+                    password).addOnCompleteListener{
+                        task -> if (task.isSuccessful) {
+                    navController.
+                    navigate("dashboard")
+                } else {
+                    error = task.exception?.message
+                }
+                }
+            }
+
+        }, modifier = Modifier.fillMaxWidth()) {
            Text(
                text = "Login",
                style = MaterialTheme.typography.bodyMedium,
@@ -156,7 +174,17 @@ fun LoginScreen(navController: NavController) {
 
         }
 
-        TextButton(onClick = {  }) {
+        TextButton(onClick = {
+            navController.navigate("Register")
+            {
+                popUpTo("Register") {
+                    inclusive = true
+                    saveState = true
+                }
+                launchSingleTop = true
+            }
+        })
+             {
             Text(
                 text = "new member?, register",
                 style = MaterialTheme.typography.bodyMedium)
@@ -170,6 +198,7 @@ fun LoginScreen(navController: NavController) {
 
 @Preview(showBackground = true)
 @Composable
+
 fun LoginScreenPreview() {
     LoginScreen(rememberNavController())
 }
