@@ -164,38 +164,40 @@ onSignupClick: (String, String) -> Unit
                     registerUser(
                         email, password,
                         context, navController,
-                        onError = { errorMsg -> error = errorMsg })
-                }
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(
-                text = "Register",
-                style = MaterialTheme.typography.button,
-                fontSize = 20.sp,
-            )
+                            onError = { errorMsg -> error = errorMsg })
+                        }
 
-        }
-        TextButton(onClick = {
-            navController.navigate("Login") {
-                popUpTo("Login") {
-                    inclusive = true
-                    saveState = true
-                }
-                launchSingleTop = true
+                },
+                modifier = Modifier.fillMaxWidth()
+                ) {
+                Text(
+                    text = "Register",
+                    style = MaterialTheme.typography.button,
+                    fontSize = 20.sp,
+                )
+
             }
-        })
-        {
-            Text(
-                text = "Already have an account? Login",
-                style = MaterialTheme.typography.body1
-            )
-        }
+                TextButton(onClick = {
+                    navController.navigate("Login") {
+                        popUpTo("Login") {
+                            inclusive = true
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                    }
+                })
+                {
+                    Text(
+                        text = "Already have an account? Login",
+                        style = MaterialTheme.typography.body1
+                    )
+                }
+
+
+            }
 
 
     }
-
-}
 fun registerUser(email: String, password: String,
                  context: Context, navController: NavController,
                  onError: (String)-> Unit ) {

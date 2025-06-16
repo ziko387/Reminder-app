@@ -89,6 +89,9 @@ dependencies {
     // firebase authentication
     implementation("com.google.firebase:firebase-auth-ktx")
 
+   // scaffold
+    implementation("androidx.compose.material:material:1.9.0-alpha04")
+
 
 
 

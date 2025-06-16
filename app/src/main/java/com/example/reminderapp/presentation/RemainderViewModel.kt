@@ -14,14 +14,29 @@ class ReminderViewModel(private val reminderRepository: ReminderRepository, ) : 
       reminderRepository.getUpcomingReminders(remainder.userId)
     }
     val getCompletedReminders: (Reminder) -> Unit = { remainder ->
+        reminderRepository.getCompletedReminders(remainder.userId)
 
-    }
-    val addRemainder: (Reminder) -> Unit = { remainder ->
-    }
-    val updateReminder: (Reminder) -> Unit = { remainder ->
-    }
-    val deleteReminder: (Reminder) -> Unit = { remainder ->
-    }
-    val getRemaindersBetweenDates: (LocalDateTime, LocalDateTime) -> Unit = { startDate, endDate ->
+        val addRemainder: (Reminder) -> Unit = { remainder ->
+            runBlocking {
+                reminderRepository.addRemainder(remainder)
+            }
+        }
+        val updateReminder: (Reminder) -> Unit = { remainder ->
+            runBlocking {
+                reminderRepository.updateReminder(remainder)
+            }
+        }
+        val deleteReminder: (Reminder) -> Unit = { remainder ->
+            runBlocking {
+                reminderRepository.deleteReminder(remainder)
+            }
+        }
+        val getRemaindersBetweenDates: (LocalDateTime, LocalDateTime) -> Unit =
+            { startDate, endDate ->
+                runBlocking {
+                    reminderRepository.getRemaindersBetweenDates(startDate, endDate)
+                }
+
+            }
     }
 }
