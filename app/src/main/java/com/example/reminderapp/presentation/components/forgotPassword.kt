@@ -1,5 +1,6 @@
 package com.example.reminderapp.presentation.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -17,49 +18,79 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.reminderapp.data.passwordReceiver.ForgotPasswordViewmodel
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import com.example.reminderapp.R
 
 
 @Composable
-fun ForgotPasswordScreen(navController: NavController){
+fun ForgotPasswordScreen(navController: NavController, showForgotPasswordScreen: Boolean,
+         onBackClick: () -> Unit = {},
+          onResetSent: () -> Unit = {},
+           viewmodel: ForgotPasswordViewmodel= viewModel()){
     var email by remember{ mutableStateOf("") }
-    var  newPassword by remember{ mutableStateOf("") }
+    val isLoading by viewmodel.isLoading.collectAsState()
+    val error by viewmodel.error.collectAsState()
+    val isSuccess by viewmodel.isSuccess.collectAsState()
+
+
 
     Column (
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ){
+        Text(
+            text =  "Forgot Password",
+            style = MaterialTheme.typography.headlineMedium,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(6.dp))
+        Image(
+            painter = painterResource(id = R.drawable.forgot),
+            contentDescription = "logo",
+            modifier = Modifier.size(119.dp).clip(CircleShape),
+            contentScale = ContentScale.Crop
+        )
+
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
             label = { Text("Email") },
             modifier = Modifier.fillMaxWidth()
         )
-        Spacer(modifier = Modifier.height(16.dp))
 
-        OutlinedTextField(
-            value = newPassword,
-            onValueChange = { newPassword = it },
-            label = { Text("newPassword") },
-            modifier = Modifier.fillMaxWidth()
-        )
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = { }, modifier = Modifier.fillMaxWidth()) {
+        Button(onClick = {viewmodel.sendPasswordResetEmail(email)}, modifier = Modifier.fillMaxWidth()
+            ){
             Text(
                 text = "Reset Password",
                 style = MaterialTheme.typography.bodyMedium,
                 fontSize = 20.sp
             )
         }
+        Spacer(modifier = Modifier.height(16.dp))
+
     }
 }
 @Preview(showBackground = true)
 @Composable
 fun ForgotPasswordScreenPreview(){
-    ForgotPasswordScreen(rememberNavController())
+    ForgotPasswordScreen(
+        rememberNavController(),showForgotPasswordScreen = true)
 }

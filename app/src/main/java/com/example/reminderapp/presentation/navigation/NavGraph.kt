@@ -12,6 +12,7 @@ import com.example.reminderapp.presentation.screen.intro.Intro_Screen3
 import com.example.reminderapp.presentation.components.LoginScreen
 import com.example.reminderapp.presentation.components.RegisterUser
 import com.example.reminderapp.presentation.screen.Dasboard.DashBoardScreen
+import com.example.reminderapp.presentation.components.ForgotPasswordScreen
 
 
 
@@ -40,6 +41,12 @@ fun ReminderNavGraph(navController: NavHostController){
        composable("Login"){
            LoginScreen(navController)
        }
+        composable("ForgotPassword"){
+            ForgotPasswordScreen(navController,
+            showForgotPasswordScreen = true)
+
+
+        }
         composable ("Dashboard"){
             DashBoardScreen(navController)
         }

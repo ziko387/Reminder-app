@@ -25,9 +25,14 @@ import kotlinx.coroutines.delay
 import com.example.reminderapp.presentation.navigation.Screen
 import com.example.reminderapp.R
 import android.content.Context
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 
 
 
@@ -42,6 +47,10 @@ fun Splash_Screen(navController: NavController) {
             }
         }
     }
+    var isCheckingAuth by remember { mutableStateOf(true) }
+
+
+
     Box(
         modifier = Modifier.fillMaxSize().background(Color.Black),
         contentAlignment = Alignment.Center
@@ -61,6 +70,13 @@ fun Splash_Screen(navController: NavController) {
                 color = Color.White,
                 fontSize = 30.sp,
                 fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+
+            CircularProgressIndicator(
+                modifier = Modifier.size(50.dp),
+                color = Color.White,
+                strokeWidth = 5.dp
             )
         }
     }

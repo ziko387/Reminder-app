@@ -190,7 +190,27 @@ fun LoginScreen(navController: NavController) {
                 style = MaterialTheme.typography.bodyMedium)
 
         }
+        Spacer(Modifier.height(25.dp))
+        TextButton(onClick ={
+            navController.navigate("ForgotPassword")
+            {
+                popUpTo("ForgotPassword") {
+                    inclusive = true
+                    saveState = true
+                }
+                launchSingleTop = true
+            }
+        })
 
+
+         {
+          Text(
+              text = "forgot password",
+              style = MaterialTheme.typography.bodyMedium
+
+          )
+
+        }
     }
 }
 
