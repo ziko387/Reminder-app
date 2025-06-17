@@ -1,6 +1,8 @@
 package com.example.reminderapp.presentation.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -27,35 +29,49 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.reminderapp.data.passwordReceiver.ForgotPasswordViewmodel
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import com.example.reminderapp.R
+import androidx.compose.ui.graphics.Color
+import androidx.compose.material3.ButtonDefaults
 
 
 @Composable
 fun ForgotPasswordScreen(navController: NavController, showForgotPasswordScreen: Boolean,
-         onBackClick: () -> Unit = {},
           onResetSent: () -> Unit = {},
-           viewmodel: ForgotPasswordViewmodel= viewModel()){
-    var email by remember{ mutableStateOf("") }
+           viewmodel: ForgotPasswordViewmodel= viewModel()) {
+    var email by remember { mutableStateOf("") }
     val isLoading by viewmodel.isLoading.collectAsState()
     val error by viewmodel.error.collectAsState()
     val isSuccess by viewmodel.isSuccess.collectAsState()
+    val showForgotPasswordScreen by remember { mutableStateOf(true) }
+
+    if (isSuccess) {
+        onResetSent()
+        navController.navigate("Login")
+        {
+            popUpTo("Login") {
+                inclusive = true
+                saveState = true
+            }
+            launchSingleTop = true
+        }
 
 
 
-    Column (
-        modifier = Modifier.fillMaxSize(),
+    }
+
+    Column(
+        modifier = Modifier.fillMaxSize()
+            .background(Color.White),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
-    ){
+    ) {
         Text(
-            text =  "Forgot Password",
+            text = "Forgot Password",
             style = MaterialTheme.typography.headlineMedium,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth()
@@ -76,8 +92,32 @@ fun ForgotPasswordScreen(navController: NavController, showForgotPasswordScreen:
         )
 
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = {viewmodel.sendPasswordResetEmail(email)}, modifier = Modifier.fillMaxWidth()
-            ){
+        Button(
+            onClick = { viewmodel.sendPasswordResetEmail(email) },
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary
+            ),
+            enabled = !isLoading && email.isNotBlank(),
+            shape = MaterialTheme.shapes.medium
+        ) {
+            if (isLoading) {
+                Text(text = "Loading...")
+            } else {
+                Text(text = "Reset Password")
+            }
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        if (error != null) {
+            Text(
+                text = error!!,
+                color = MaterialTheme.colorScheme.error,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+        if (isSuccess) {
+
             Text(
                 text = "Reset Password",
                 style = MaterialTheme.typography.bodyMedium,
@@ -88,9 +128,12 @@ fun ForgotPasswordScreen(navController: NavController, showForgotPasswordScreen:
 
     }
 }
-@Preview(showBackground = true)
-@Composable
-fun ForgotPasswordScreenPreview(){
-    ForgotPasswordScreen(
-        rememberNavController(),showForgotPasswordScreen = true)
-}
+
+
+    @Preview(showBackground = true)
+    @Composable
+    fun ForgotPasswordScreenPreview() {
+        ForgotPasswordScreen(
+            rememberNavController(), showForgotPasswordScreen = true
+        )
+    }

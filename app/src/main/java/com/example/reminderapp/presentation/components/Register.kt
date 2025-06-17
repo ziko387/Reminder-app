@@ -205,6 +205,13 @@ fun registerUser(email: String, password: String,
         .addOnCompleteListener{ task ->
             if(task.isSuccessful){
                 navController.navigate("login")
+                {
+                    popUpTo("login") {
+                        inclusive = true
+                        saveState = true
+                    }
+                    launchSingleTop = true
+                }
             } else {
                 onError(task.exception?.message ?:
                 "Registration failed")

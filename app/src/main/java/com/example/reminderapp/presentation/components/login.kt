@@ -159,6 +159,13 @@ fun LoginScreen(navController: NavController) {
                         task -> if (task.isSuccessful) {
                     navController.
                     navigate("dashboard")
+                    {
+                        popUpTo("dashboard") {
+                            inclusive = true
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                    }
                 } else {
                     error = task.exception?.message
                 }
