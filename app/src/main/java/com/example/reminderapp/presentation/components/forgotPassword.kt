@@ -51,14 +51,7 @@ fun ForgotPasswordScreen(navController: NavController, showForgotPasswordScreen:
 
     if (isSuccess) {
         onResetSent()
-        navController.navigate("Login")
-        {
-            popUpTo("Login") {
-                inclusive = true
-                saveState = true
-            }
-            launchSingleTop = true
-        }
+        navController.navigate("login")
 
 
 

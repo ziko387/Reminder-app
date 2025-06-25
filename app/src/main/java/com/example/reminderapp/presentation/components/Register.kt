@@ -86,9 +86,7 @@ onSignupClick: (String, String) -> Unit
         )
         Spacer(Modifier.height(25.dp))
 
-
-        Spacer(Modifier.height(25.dp))
-
+        
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },

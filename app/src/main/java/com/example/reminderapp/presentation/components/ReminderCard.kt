@@ -26,17 +26,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import java.time.LocalDateTime
 import androidx.compose.ui.graphics.Color
-
-
-
 
 
 @Composable
 fun ReminderCard(
-    reminder: Reminder
-){
+    reminder: Reminder,
+    onEditClick: (Reminder) -> Unit,
+    onDeleteClick: (Reminder) -> Unit,
+
+    ){
 
         Card(
             modifier = Modifier.padding(vertical = 6.dp).clip(RoundedCornerShape(22.dp))
@@ -77,14 +76,19 @@ fun ReminderCard(
                 )
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Spacer(modifier = Modifier.weight(1f))
-                    Button(onClick = {},colors = ButtonDefaults.buttonColors(containerColor =Color.Red )) {
+                    Button(onClick = {
+                        onDeleteClick(reminder)
+
+                    },colors = ButtonDefaults.buttonColors(containerColor =Color.Red )) {
                         Text(
                             text = "Delete",
                             style = MaterialTheme.typography.bodyMedium,
                         )
                     }
                     Spacer(modifier = Modifier.width(8.dp))
-                   Button(onClick = {},colors = ButtonDefaults.buttonColors(containerColor =Color.Red )) {
+                   Button(onClick = {
+                       onEditClick(reminder)
+                   },colors = ButtonDefaults.buttonColors(containerColor =Color.Red )) {
                        Text(
                            text = "Edit",
                            style = MaterialTheme.typography.bodyMedium,
@@ -101,9 +105,21 @@ fun ReminderCard(
 fun ReminderCardPreview(){
     ReminderCard(
         reminder = Reminder(
-            name = "party",
-            description = "going to musa for party",
-            datetime = LocalDateTime.now()
-        )
+            name = "Meeting",
+            description = "attend a meeting",
+            datetime = 1234567890,
+            isCompleted = false,
+            userId = 1
+        ),
+        onEditClick = {reminder ->
+            println("Edit button clicked for reminder: ${reminder.name}")
+        },
+        onDeleteClick = { reminder ->
+            println("Delete button clicked for reminder: ${reminder.name}")
+
+        }
+
     )
+
+
 }

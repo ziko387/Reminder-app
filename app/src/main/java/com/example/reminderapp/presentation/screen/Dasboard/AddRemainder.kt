@@ -1,5 +1,6 @@
 package com.example.reminderapp.presentation.screen.Dasboard
 
+import android.annotation.SuppressLint
 import android.app.TimePickerDialog
 import android.icu.util.Calendar
 import android.renderscript.Sampler
@@ -30,6 +31,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberDatePickerState
+import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
@@ -41,36 +43,41 @@ import java.time.LocalTime
 import com.example.reminderapp.data.model.Reminder
 import java.text.SimpleDateFormat
 import java.util.Date
+import java.sql.Time
+import androidx.compose.foundation.layout.Arrangement
+import com.example.reminderapp.presentation.screen.Dasboard.DashBoardViewModel
+import com.example.reminderapp.data.Repository.ReminderRepositoryImpl
+
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddRemainderScreen(
-    reminder: Reminder,
+    viewModel: DashBoardViewModel,
+    onDismiss: () -> Unit,
+
+
 
 ){
-   var name by remember { mutableStateOf("") }
-   var description by remember { mutableStateOf("") }
-   var calender = Calendar.getInstance()
+    var name by remember { mutableStateOf("") }
+    var description by remember { mutableStateOf("") }
+    var calender = Calendar.getInstance()
     var context = LocalContext.current
     var datePickerController by remember { mutableStateOf(false) }
     var selectedTime by remember { mutableStateOf("") }
     val dateState = rememberDatePickerState()
+    var selectedDate by remember { mutableStateOf("") }
+
 
     var selectDate by remember { mutableStateOf(Date().time) }
-    val reminder= Reminder(
-        name = name,
-        description = description,
-        datetime = LocalDateTime.now(),
-        isCompleted = false
-
-    )
 
 
 
 
-       
-    
+
+
+
+
     val timePickerDialog = TimePickerDialog(
         context,{ _: TimePicker, hourOfDay: Int, minute: Int ->
             selectedTime = "$hourOfDay:$minute"
@@ -107,43 +114,43 @@ fun AddRemainderScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Button(onClick = {
-          datePickerController=true
+                datePickerController = true
             }) {
                 Text(
                     text = "Select Date:${convertLongDates(selectDate)}",
 
-                )
+                    )
             }
-             if (datePickerController){
-                 DatePickerDialog(
-                     onDismissRequest = {datePickerController=false},
-                     confirmButton = {
-                         Button(onClick = {
-                             if (dateState.selectedDateMillis!=null){
-                                selectDate=dateState.selectedDateMillis!!
-                             }
+            if (datePickerController) {
+                DatePickerDialog(
+                    onDismissRequest = { datePickerController = false },
+                    confirmButton = {
+                        Button(onClick = {
+                            if (dateState.selectedDateMillis != null) {
+                                selectDate = dateState.selectedDateMillis!!
+                            }
 
 
 
-                             datePickerController=false
-                         }) {
-                             Text(text = "Confirm")
-                         }
-                     },
-                     dismissButton = {
-                         Button(onClick = {datePickerController=false}) {
-                             Text(text = "Dismiss")
-                         }
-                     }
-                 ) {
-                     DatePicker(
-                         state = dateState
-                     )
-                 }
-             }
-            
-            
-            
+                            datePickerController = false
+                        }) {
+                            Text(text = "Confirm")
+                        }
+                    },
+                    dismissButton = {
+                        Button(onClick = { datePickerController = false }) {
+                            Text(text = "Dismiss")
+                        }
+                    }
+                ) {
+                    DatePicker(
+                        state = dateState
+                    )
+                }
+            }
+
+
+
             Spacer(modifier = Modifier.weight(1f))
             Button(onClick = {
                 timePickerDialog.show()
@@ -156,18 +163,19 @@ fun AddRemainderScreen(
             }
         }
         Spacer(modifier = Modifier.height(10.dp).width(100.dp))
+        Row(modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween) {
+        Button(
+            onClick = {
+                if(name.isNotBlank()){
+                    viewModel.addRemainder(name,description,
+                        datetime = selectDate,false)
+                    onDismiss()
+                }
 
-        Button(onClick = {
-            val reminder = Reminder(
-                name = name,
-                description = description,
-                datetime = LocalDateTime.now()
+            },enabled = name.isNotBlank()
 
-            )
-            
-
-        }, modifier = Modifier.align(Alignment.CenterHorizontally),
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Red)) {
+        ) {
             Text(
                 text = "Add Reminder",
                 fontWeight = FontWeight.Bold
@@ -175,11 +183,22 @@ fun AddRemainderScreen(
 
 
         }
+            Button(
+                onClick = {
+                    onDismiss()
+
+                }){
+                Text(
+                    text = "Cancel",
+                    fontWeight = FontWeight.Bold
+                )
+            }
+    }
     }
 
 
 
-            }
+}
 private fun convertLongDates(date: Long): String{
     val dateNew= Date(date)
     val format= SimpleDateFormat.getDateInstance()
@@ -188,21 +207,16 @@ private fun convertLongDates(date: Long): String{
 }
 
 
+@SuppressLint("ViewModelConstructorInComposable")
 @Preview(showBackground = true)
 @Composable
-fun AddRemainderScreenPreview(){
+fun AddRemainderScreenPreview(
+
+){
+    var view_Model = DashBoardViewModel(ReminderRepositoryImpl())
     AddRemainderScreen(
-        reminder = Reminder(
-        name = "party",
-        description = "going to musa for party",
-        datetime = LocalDateTime.now()
-        )
+
+        viewModel = view_Model,
+        onDismiss = {}
     )
 }
-
-
-
-
-
-
-

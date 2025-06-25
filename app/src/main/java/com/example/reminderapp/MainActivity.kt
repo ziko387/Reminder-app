@@ -13,6 +13,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.initialize
 
 
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

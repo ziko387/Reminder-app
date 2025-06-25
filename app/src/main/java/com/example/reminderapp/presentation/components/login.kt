@@ -14,8 +14,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.Text
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.res.painterResource
 import com.example.reminderapp.R
@@ -24,13 +24,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.material3.Button
-import androidx.compose.material3.TextButton
+import androidx.compose.material.Button
+import androidx.compose.material.TextButton
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
-import androidx.compose.material3.IconButton
+import androidx.compose.material.IconButton
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.material.icons.Icons
@@ -44,10 +44,13 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(navController: NavController) {
+fun LoginScreen(navController: NavController,
+               ) {
     var error by remember { mutableStateOf<String?>(null) }
     var passwordVisible by remember { mutableStateOf(false) }
     var email by remember { mutableStateOf("") }
@@ -64,7 +67,6 @@ fun LoginScreen(navController: NavController) {
             text = "Login ",
             color = Color.White,
             fontWeight = FontWeight.Bold,
-            style = MaterialTheme.typography.headlineMedium,
             fontSize = 30.sp
         )
         Image(
@@ -79,14 +81,15 @@ fun LoginScreen(navController: NavController) {
             value = email,
             onValueChange = { email = it },
             modifier = Modifier.fillMaxWidth(),
-            label = { Text("email") },
-            colors = OutlinedTextFieldDefaults.colors(
+            label ={ Text("Email") },
+            colors = androidx.compose.material.TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = Color.White,
                 unfocusedBorderColor = Color.White,
+                textColor = Color.White,
                 focusedLabelColor = Color.White,
-               unfocusedLabelColor = Color.White
-
+                unfocusedLabelColor = Color.White
             ),
+            singleLine = true,
 
 //            colors = TextFieldDefaults.outlinedTextFieldColors(
 //                focusedBorderColor = Color.White,
@@ -96,7 +99,6 @@ fun LoginScreen(navController: NavController) {
 //                unfocusedLabelColor = Color.White
 
 //            ),
-            singleLine = true,
             visualTransformation =if(passwordVisible)
                 VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
@@ -120,11 +122,12 @@ fun LoginScreen(navController: NavController) {
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
-            label = { Text("Password") },
             modifier = Modifier.fillMaxWidth(),
-            colors = OutlinedTextFieldDefaults.colors(
+            label = { Text("Password") },
+            colors = androidx.compose.material.TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = Color.White,
                 unfocusedBorderColor = Color.White,
+                textColor = Color.White,
                 focusedLabelColor = Color.White,
                 unfocusedLabelColor = Color.White
             ),
@@ -175,7 +178,7 @@ fun LoginScreen(navController: NavController) {
         }, modifier = Modifier.fillMaxWidth()) {
            Text(
                text = "Login",
-               style = MaterialTheme.typography.bodyMedium,
+               style = MaterialTheme.typography.subtitle2,
                fontSize = 20.sp
            )
 
@@ -194,7 +197,7 @@ fun LoginScreen(navController: NavController) {
              {
             Text(
                 text = "new member?, register",
-                style = MaterialTheme.typography.bodyMedium)
+                style = MaterialTheme.typography.subtitle2)
 
         }
         Spacer(Modifier.height(25.dp))
@@ -213,7 +216,7 @@ fun LoginScreen(navController: NavController) {
          {
           Text(
               text = "forgot password",
-              style = MaterialTheme.typography.bodyMedium
+              style = MaterialTheme.typography.subtitle2
 
           )
 

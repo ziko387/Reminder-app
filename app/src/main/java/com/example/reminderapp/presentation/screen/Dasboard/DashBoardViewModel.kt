@@ -1,69 +1,55 @@
 package com.example.reminderapp.presentation.screen.Dasboard
-import com.example.reminderapp.data.Repository.ReminderRepository
-import com.example.reminderapp.data.model.Reminder
 import androidx.lifecycle.ViewModel
-import androidx.navigation.NavController
-import androidx.navigation.NavViewModelStoreProvider
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.runBlocking
-import java.time.LocalDateTime
-import java.util.Date
-import com.example.reminderapp.data.Dao.ReminderDao
-import com.google.common.primitives.UnsignedInts.remainder
-
-class DashBoardViewModel(
-    private val navController: NavController,
-    private val reminderDao: ReminderDao
-
-): ViewModel()
-
-{
-    private val reminderRepository = ReminderRepository(
-        reminderDao = TODO()
-    )
+import com.example.reminderapp.data.Repository.ReminderRepository
+import com.example.reminderapp.data.Repository.ReminderRepositoryImpl
+import com.example.reminderapp.data.model.Reminder
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+import androidx.lifecycle.ViewModelProvider
 
 
+class DashBoardViewModel(private val reminderRepository: ReminderRepository = ReminderRepositoryImpl()) : ViewModel(){
+ val firebaseReminders: StateFlow<List<Reminder>> = reminderRepository.fetchRemaindersFromFirebase().stateIn(
+     scope = viewModelScope,
+     started = SharingStarted.WhileSubscribed(5000),
+     initialValue = emptyList()
+ )
+    suspend fun updateRemainder(reminder: Reminder){
+        reminderRepository.updateReminderToFirebase(reminder)
+    }
+      fun deleteRemainder(reminder: Reminder) {
+        reminderRepository.deleteReminderToFirebase(reminder)
+    }
     fun addRemainder(
-        userId: Int,
         name: String,
         description: String,
-        datetime: LocalDateTime,
+        datetime: Long,
         isCompleted: Boolean
     ){
-        val reminder = Reminder(
-            userId = userId,
-            name = name,
-            description = description,
-            datetime = datetime,
-            isCompleted = isCompleted)
-
-
-
-        runBlocking {
-            reminderRepository.addRemainder(reminder)
+        viewModelScope.launch {
+            val newRemainder= Reminder(
+                userId = 0,
+                name = name,
+                description = description,
+                datetime = datetime,
+                isCompleted = isCompleted
+            )
+            reminderRepository.addRemainderToFirebase(newRemainder)
         }
 
     }
-    fun getUpcomingReminders(userId: Int): Flow<List<Reminder>>{
-        return reminderRepository.getUpcomingReminders(userId)
 
+}
+class DashBoardViewModelFactory(private val repository: ReminderRepository) :
+    ViewModelProvider.Factory {
+    override fun<T : ViewModel> create(modelClass: Class<T>) : T {
+        if(modelClass.isAssignableFrom(ReminderRepository::class.java)){
+            @Suppress("UNCHECKED_CAST")
+            return DashBoardViewModel(repository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
-    fun getCompletedReminders(userId: Int): Flow<List<Reminder>> {
-        return reminderRepository.getCompletedReminders(userId)
-    }
-
-
-    fun updateReminder(
-        userId: Int,
-        name: String,
-        description: String,
-        datetime: LocalDateTime,
-    ){
-        val reminder = Reminder(
-            userId = userId,
-            name = name,
-            description = description,
-            datetime = datetime,)
-    }
-
 }

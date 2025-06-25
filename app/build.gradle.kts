@@ -41,6 +41,9 @@ android {
     buildFeatures {
         compose = true
     }
+    kapt{
+        correctErrorTypes = true
+    }
 }
 
 dependencies {
@@ -88,9 +91,21 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     // firebase authentication
     implementation("com.google.firebase:firebase-auth-ktx")
+    // firebase database
+    implementation("com.google.firebase:firebase-database-ktx")
+    //firebase storage
+    implementation("com.google.firebase:firebase-storage-ktx")
+    // firebase firestone
+    implementation("com.google.firebase:firebase-firestore-ktx")
 
    // scaffold
     implementation("androidx.compose.material:material:1.9.0-alpha04")
+
+
+
+
+
+
 
 
 
