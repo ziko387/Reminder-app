@@ -161,9 +161,9 @@ fun LoginScreen(navController: NavController,
                     password).addOnCompleteListener{
                         task -> if (task.isSuccessful) {
                     navController.
-                    navigate("dashboard")
+                    navigate("Dashboard")
                     {
-                        popUpTo("dashboard") {
+                        popUpTo("Dashboard") {
                             inclusive = true
                             saveState = true
                         }

@@ -46,7 +46,7 @@ class DashBoardViewModel(private val reminderRepository: ReminderRepository = Re
 class DashBoardViewModelFactory(private val repository: ReminderRepository) :
     ViewModelProvider.Factory {
     override fun<T : ViewModel> create(modelClass: Class<T>) : T {
-        if(modelClass.isAssignableFrom(ReminderRepository::class.java)){
+        if(modelClass.isAssignableFrom(DashBoardViewModel::class.java)){
             @Suppress("UNCHECKED_CAST")
             return DashBoardViewModel(repository) as T
         }
