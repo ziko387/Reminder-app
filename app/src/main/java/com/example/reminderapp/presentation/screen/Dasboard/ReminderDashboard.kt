@@ -44,7 +44,8 @@ import com.example.reminderapp.data.Repository.ReminderRepositoryImpl
 import com.example.reminderapp.data.model.Reminder
 import com.example.reminderapp.presentation.components.ReminderCard
 import androidx.compose.foundation.layout.Box
-
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.systemBars
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -63,6 +64,8 @@ fun DashBoardScreen(
 
     val context: Context = LocalContext.current
     Scaffold(
+        contentWindowInsets = WindowInsets(0.dp, 0.dp, 0.dp, 2.dp),
+
         topBar = {
             TopAppbar(
 
@@ -274,7 +277,7 @@ fun DashBoardScreen(
         //  onDismissRequest = { showEditDialog.value = false},
         // title = { Text("Edit Todo") },
         //   text = {
-        //  EditToDoForm(
+        //  EditRemainderScreen(
         //     todo = RemainderBeingEdited.value!!,
         //   onSubmit = {updateReminder ->
         //    viewModel.updateRemainder(

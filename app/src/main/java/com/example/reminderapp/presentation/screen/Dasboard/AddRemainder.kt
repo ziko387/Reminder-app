@@ -110,8 +110,10 @@ fun AddRemainderScreen(
 
         )
         Spacer(modifier = Modifier.height(10.dp))
-        Row(
-            verticalAlignment = Alignment.CenterVertically
+        Column (
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+
         ) {
             Button(onClick = {
                 datePickerController = true
@@ -150,8 +152,6 @@ fun AddRemainderScreen(
             }
 
 
-
-            Spacer(modifier = Modifier.weight(1f))
             Button(onClick = {
                 timePickerDialog.show()
             }) {
@@ -162,7 +162,7 @@ fun AddRemainderScreen(
 
             }
         }
-        Spacer(modifier = Modifier.height(10.dp).width(100.dp))
+        Spacer(modifier = Modifier.height(12.dp))
         Row(modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween) {
         Button(
